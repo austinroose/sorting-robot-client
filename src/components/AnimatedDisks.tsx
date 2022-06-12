@@ -1,8 +1,6 @@
-// import { ReactComponent as WhiteDisk } from './icons/white-disk.svg';
 import WhiteDisk2 from '../icons/white-disk.svg';
-// import { ReactComponent as BlackDisk } from './icons/black-disk.svg';
 import BlackDisk2 from '../icons/black-disk.svg';
-import React, { ElementRef, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import './AnimatedDisks.css'
 
 interface AnimatedDisksProps {

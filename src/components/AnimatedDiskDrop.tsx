@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { DiskColor } from '../model/Disk';
-import {ReactComponent as Black1Disk} from '../icons/black-disk2.svg';
 import {ReactComponent as WhiteDisk} from '../icons/white-disk.svg';
 import {ReactComponent as ProcessingDisk} from '../icons/processing-disk.svg';
 import {ReactComponent as OtherDisk} from '../icons/other-disk.svg';
