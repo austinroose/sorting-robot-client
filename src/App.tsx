@@ -99,7 +99,6 @@ function App() {
   }
 
   const diskAddAnimation = (disk: DiskColor) => {
-    console.log('here')
     switch (disk.color) {
       case 'black':
         setBlackDiskAdd((prevState) => prevState + 1);
