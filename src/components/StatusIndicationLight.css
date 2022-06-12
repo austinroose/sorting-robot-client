@@ -1,0 +1,14 @@
+.light {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    margin-left: 10px;
+}
+
+.light.working {
+    background-color: green;
+}
+
+.light.error {
+    background-color: red;
+}

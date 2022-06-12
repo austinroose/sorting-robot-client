@@ -1,0 +1,10 @@
+
+.banner {
+    position: absolute;
+    z-index: -100;
+    opacity: 0%;
+    margin-top: -60px;
+    margin-left: -30px; /* To make this element to be centered in the flex container */
+    width: 60px;
+    height: 60px;
+}

@@ -1,0 +1,11 @@
+.animatedDisksContainer {
+    width: 100%;
+    height: 60px;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+}
+
+img {
+    position: absolute;
+}

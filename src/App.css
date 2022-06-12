@@ -36,3 +36,105 @@
     transform: rotate(360deg);
   }
 }
+
+.animationContainer {
+  width: 200px;
+}
+
+.statusContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.disksCollectedContainers {
+  width: 100%;
+  box-sizing: border-box;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 60px;
+}
+
+.disksCollected {
+  background-color: lightgray;
+  height: 150px;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  border-radius: 20px;
+}
+
+.disksCollected.right {
+  margin-left: 20px;
+}
+
+.disksCollected.processing {
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://thumbs.dreamstime.com/b/safety-stripes-warning-barricade-tape-yellow-black-diagonal-seamless-geometrical-pattern-vector-illustration-142846972.jpg');
+  background-repeat: no-repeat, no-repeat;
+  background-position: center; 
+  background-size: cover;
+}
+
+.processingDisksText {
+  color: white;
+}
+
+
+@media only screen and (max-width: 700px) {
+
+  .disksCollectedContainers {
+    padding-right: 10px;
+    padding-left: 10px;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .disksCollected.right {
+    margin-left: 0px;
+    margin-top: 30px;
+  }
+}
+
+@media only screen and (max-width: 300px) {
+  .disksCollected {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  .animationContainer {
+    width: 100%;
+    overflow: hidden;
+    z-index: 2;
+  }
+}
+
+h1 {
+  font-size: 21px;
+}
+
+.statusText {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.statusText.error {
+  color:red;
+  font-weight: bold;
+}
+
+p {
+  font-size: 18px;
+}
+
+.nrOfDisks {
+  font-size: 22px;
+}
