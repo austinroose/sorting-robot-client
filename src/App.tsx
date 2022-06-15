@@ -9,11 +9,12 @@ import { ErrorCodes, DiskEventCodes, RobotEvents } from './data/EventCodes';
 import { ifDiskEvent } from './util';
 import { AnimatedDiskDrop } from './components/AnimatedDiskDrop';
 import { DiskColor } from './model/Disk';
+import { io } from 'socket.io-client'
 
 function App() {
 
   const initialDefaultRobotState: RobotState = {
-    error: 0,
+    status: 0,
     nr_black_disks: 0,
     nr_white_disks: 0,
     nr_other_disks: 0,
@@ -39,24 +40,40 @@ function App() {
     })
     const windowWidth = window.innerWidth;
     setScreenWidthIsMobile(windowWidth < 530);
-    window.addEventListener('resize', (e) => windowResize(e))
-    console.log('websocket', websocket);
-    // initialize websocket connection with the server over protocolOne protocol
-    const robotWebSocket = new WebSocket(process.env.REACT_APP_SERVER_WS_URL!, "protocolOne");
-    setWebSocket(robotWebSocket);
-    robotWebSocket.onmessage = (e: any) => {
-      console.log("WS receive: ", JSON.parse(e.data).id)
-      const reqData = JSON.parse(e.data);
-      const eventCode: number = reqData.event // recieved event code
-      // if we have disk event or error event
-      const ifDiskRecieved = ifDiskEvent(eventCode);
-      if (ifDiskRecieved) { // event code in the range of 100 - 199
-        const wsData: WebSocketRecieveDiskCollected = reqData // cast WebSocket data to valid type
-        if (wsData.event == DiskEventCodes.NEW_DISK_BEING_PROCESSED) {
+    // window.addEventListener('resize', (e) => windowResize(e))
+    // // initialize websocket connection with the server over protocolOne protocol
+    // // we start either normal websocket connection over ws protocol or secure websocket connection over wss protocol if we are in production environment
+    // const loc = window.location;
+    // let wsStart = 'ws://';
+    // let endpoint = wsStart + '127.0.0.1:8000' + '/';
+    // if (true) {
+    //   wsStart = 'wss://'
+    //   endpoint = wsStart + 'localhost:443' + '/';
+    // }
+    // // const robotWebSocket = new WebSocket(process.env.REACT_APP_SERVER_WS_URL!, "protocolOne");
+    // const robotWebSocket = new WebSocket("wss://localhost:8000/", "protocolOne");
+    // // @ts-ignore
+    // robotWebSocket.onerror = (error) => {
+    //   console.log('error', error)
+    // }
+    // setWebSocket(robotWebSocket);
+    const socketIo = io(process.env.REACT_APP_SERVER_WS_URL!)
+
+    socketIo.on('errorUpdate', (errorEvent) => {
+      setRobotState((prevState) => {
+        let newRobotState: RobotState = {...prevState};
+        newRobotState.status = errorEvent;
+        return newRobotState;
+      })
+    })
+
+    // disk events are associated with socketIo event code 'diskEvent'
+    socketIo.on('diskEvent', (eventCode, nrOfDisksBeingProcessed) => {
+        if (eventCode == DiskEventCodes.NEW_DISK_BEING_PROCESSED) {
           // new disk is being processed event
           setRobotState((prevState) => {
             let newRobotState: RobotState = {...prevState};
-            newRobotState.nr_of_disks_being_processed = wsData.nr_of_disks_being_processed; // only update number of disks being processed
+            newRobotState.nr_of_disks_being_processed = nrOfDisksBeingProcessed; // only update number of disks being processed
             diskAddAnimation({color: 'processing'});
             return newRobotState;
           })
@@ -64,8 +81,8 @@ function App() {
           // new disk was recieved and we need to update the collected disks number
           setRobotState((prevState) => {
             let newRobotState: RobotState = {...prevState};
-            newRobotState.nr_of_disks_being_processed = wsData.nr_of_disks_being_processed;
-            switch(reqData.event) {
+            newRobotState.nr_of_disks_being_processed = nrOfDisksBeingProcessed;
+            switch(eventCode) {
               case DiskEventCodes.BLACK_DISK_COLLECTED:
                 newRobotState.nr_black_disks = newRobotState.nr_black_disks + 1; // increase number of disks collected state variable
                 diskAddAnimation({color: 'black'}); // add disk animation
@@ -79,19 +96,58 @@ function App() {
                 diskAddAnimation({color: 'other'});
                 break
             }
-            return newRobotState 
+            return newRobotState
           })
         }
-      } else {
-        // we got error event
-        setRobotState((prevState) => {
-          let newRobotState: RobotState = {...prevState};
-          newRobotState.error = reqData.event;
-          return newRobotState;
-        })
-      }
-    }
-  }, [])
+      })
+    }, [])
+    // robotWebSocket.onmessage = (e: any) => {
+    //   console.log("WS receive: ", JSON.parse(e.data).id)
+    //   const reqData = JSON.parse(e.data);
+    //   const eventCode: number = reqData.event // recieved event code
+    //   // if we have disk event or error event
+    //   const ifDiskRecieved = ifDiskEvent(eventCode);
+    //   if (ifDiskRecieved) { // event code in the range of 100 - 199
+    //     const wsData: WebSocketRecieveDiskCollected = reqData // cast WebSocket data to valid type
+    //     if (wsData.event == DiskEventCodes.NEW_DISK_BEING_PROCESSED) {
+    //       // new disk is being processed event
+    //       setRobotState((prevState) => {
+    //         let newRobotState: RobotState = {...prevState};
+    //         newRobotState.nr_of_disks_being_processed = wsData.nr_of_disks_being_processed; // only update number of disks being processed
+    //         diskAddAnimation({color: 'processing'});
+    //         return newRobotState;
+    //       })
+    //     } else {
+    //       // new disk was recieved and we need to update the collected disks number
+    //       setRobotState((prevState) => {
+    //         let newRobotState: RobotState = {...prevState};
+    //         newRobotState.nr_of_disks_being_processed = wsData.nr_of_disks_being_processed;
+    //         switch(reqData.event) {
+    //           case DiskEventCodes.BLACK_DISK_COLLECTED:
+    //             newRobotState.nr_black_disks = newRobotState.nr_black_disks + 1; // increase number of disks collected state variable
+    //             diskAddAnimation({color: 'black'}); // add disk animation
+    //             break
+    //           case DiskEventCodes.WHITE_DISK_COLLECTED:
+    //             newRobotState.nr_white_disks = newRobotState.nr_white_disks + 1;
+    //             diskAddAnimation({color: 'white'});
+    //             break
+    //           case DiskEventCodes.OTHER_DISK_COLLECTED:
+    //             newRobotState.nr_other_disks = newRobotState.nr_other_disks + 1;
+    //             diskAddAnimation({color: 'other'});
+    //             break
+    //         }
+    //         return newRobotState
+    //       })
+    //     }
+    //   } else {
+    //     // we got error event
+    //     setRobotState((prevState) => {
+    //       let newRobotState: RobotState = {...prevState};
+    //       newRobotState.error = reqData.event;
+    //       return newRobotState;
+    //     })
+    //   }
+    // }
 
   const windowResize = (e: UIEvent) => {
     const windowWidth = window.innerWidth;
@@ -126,7 +182,7 @@ function App() {
         <div className='statusContainerContent'>
           <h1>App status:</h1>
           {
-            robotState.error == 0 ?
+            robotState.status == 0 ?
             <div>
               <div className='statusText'><p>Fully functional</p> 
                 <StatusIndicationLight status={1}></StatusIndicationLight>
