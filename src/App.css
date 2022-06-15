@@ -49,6 +49,11 @@
   flex-direction: column;
 }
 
+.error-container {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
 /* loading icon */
 .loader {
   border: 16px solid #f3f3f3; /* Light grey */

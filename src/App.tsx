@@ -161,7 +161,7 @@ function App() {
                           </div>
                         </div>
                         :
-                        <div>
+                        <div className='error-container'>
                           <div className='statusText error'><p>Error mode</p>
                             <StatusIndicationLight status={0}></StatusIndicationLight>
                           </div>
