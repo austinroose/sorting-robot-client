@@ -1,4 +1,5 @@
 export enum ErrorCodes {
+    NO_ERROR = 0,
     DISK_COLLECTED_BUT_DID_NOT_GET_TO_CONTAINER = 200,
     JAMMED_MOTOR,
     BLOCKED_SENSOR
@@ -13,9 +14,10 @@ export enum DiskEventCodes {
 
 // we associate human-readable text with each error code constant as well as robot event constant
 export const RobotEvents: {[key in ErrorCodes | DiskEventCodes]: string} = {
+    [ErrorCodes.NO_ERROR]: "Robot in working condition (no error)",
     [ErrorCodes.DISK_COLLECTED_BUT_DID_NOT_GET_TO_CONTAINER]: "Disk was collected from main belt, but didn't get put to container",
     [ErrorCodes.JAMMED_MOTOR]: 'Jammed motor',
-    [ErrorCodes.BLOCKED_SENSOR]: 'Blocked sensor',
+    [ErrorCodes.BLOCKED_SENSOR]: 'Blocked sensor. Try to ensure that all color sensors are clear',
     [DiskEventCodes.BLACK_DISK_COLLECTED]: 'Black disk collected',
     [DiskEventCodes.WHITE_DISK_COLLECTED]: 'White disk collected',
     [DiskEventCodes.OTHER_DISK_COLLECTED]: 'Other color disk collected',
