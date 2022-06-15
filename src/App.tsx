@@ -69,7 +69,7 @@ function App() {
 
     // disk events are associated with socketIo event code 'diskEvent'
     socketIo.on('diskEvent', (event, nrOfDisksBeingProcessed) => {
-      console.log('event', event.event, typeof event.event)
+      console.log('event', event, nrOfDisksBeingProcessed)
         if (event == DiskEventCodes.NEW_DISK_BEING_PROCESSED) {
           // new disk is being processed event
           setRobotState((prevState) => {
