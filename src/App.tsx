@@ -221,8 +221,6 @@ function App() {
           <p className='nrOfDisks processingDisksText'>{robotState.nr_disks_processing}</p>
         </div>
       </div>
-      <button>error</button>
-      <button onClick={() => diskAddAnimation({color: 'processing'})}>Processing disk add animation</button>
     </div>
   );
 }
