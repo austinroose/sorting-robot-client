@@ -138,7 +138,7 @@ function App() {
   /* ===================================== */
 
   return (
-    <div>
+    <div className='app-container'>
       {
         loadingApp ?
             <div className='app-loading-container'>
