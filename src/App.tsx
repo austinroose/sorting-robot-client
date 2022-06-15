@@ -196,7 +196,7 @@ function App() {
               <div className='statusText error'><p>Error mode</p>
                 <StatusIndicationLight status={0}></StatusIndicationLight>
               </div>
-              <p>Error message : {convertErrorCodeToErrorMessage(robotState.status as number)}</p>
+              <p>Error message: {convertErrorCodeToErrorMessage(robotState.status as number)}</p>
             </div>
           }
         </div>
