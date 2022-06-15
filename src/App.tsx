@@ -57,7 +57,7 @@ function App() {
     //   console.log('error', error)
     // }
     // setWebSocket(robotWebSocket);
-    const socketIo = io(process.env.REACT_APP_SERVER_WS_URL!)
+    const socketIo = io(process.env.REACT_APP_SERVER_WS_URL!, {transports: ['websocket'], withCredentials: true})
 
     socketIo.on('errorUpdate', (errorEvent) => {
       setRobotState((prevState) => {
