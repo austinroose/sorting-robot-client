@@ -18,7 +18,7 @@ function App() {
     nr_black_disks: 0,
     nr_white_disks: 0,
     nr_other_disks: 0,
-    nr_of_disks_being_processed: 0
+    nr_of_disks_processing: 0
   } 
 
   const [websocket, setWebSocket] = useState<WebSocket>();
@@ -73,7 +73,7 @@ function App() {
           // new disk is being processed event
           setRobotState((prevState) => {
             let newRobotState: RobotState = {...prevState};
-            newRobotState.nr_of_disks_being_processed = nrOfDisksBeingProcessed; // only update number of disks being processed
+            newRobotState.nr_of_disks_processing = nrOfDisksBeingProcessed; // only update number of disks being processed
             diskAddAnimation({color: 'processing'});
             return newRobotState;
           })
@@ -81,7 +81,7 @@ function App() {
           // new disk was recieved and we need to update the collected disks number
           setRobotState((prevState) => {
             let newRobotState: RobotState = {...prevState};
-            newRobotState.nr_of_disks_being_processed = nrOfDisksBeingProcessed;
+            newRobotState.nr_of_disks_processing = nrOfDisksBeingProcessed;
             switch(eventCode) {
               case DiskEventCodes.BLACK_DISK_COLLECTED:
                 newRobotState.nr_black_disks = newRobotState.nr_black_disks + 1; // increase number of disks collected state variable
@@ -217,7 +217,7 @@ function App() {
         <div className='disksCollected processing'>
           <AnimatedDiskDrop disk={{color: "processing"}} animationTrigger={processingDiskAdd}></AnimatedDiskDrop>
           <h1 className='processingDisksText'>Nr of disks being processed</h1>
-          <p className='nrOfDisks processingDisksText'>{robotState.nr_of_disks_being_processed}</p>
+          <p className='nrOfDisks processingDisksText'>{robotState.nr_of_disks_processing}</p>
         </div>
       </div>
       <button>error</button>

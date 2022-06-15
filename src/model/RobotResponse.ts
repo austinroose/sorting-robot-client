@@ -4,7 +4,7 @@ export interface RobotInfoResponseModel {
     nr_white_disks: number;
     nr_other_disks: number;
     status: number;
-    nr_of_disks_being_processed: number;
+    nr_of_disks_processing: number;
 }
 
 export interface WebSocketRecieve {
