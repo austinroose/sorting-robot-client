@@ -59,17 +59,17 @@ function App() {
     // setWebSocket(robotWebSocket);
     const socketIo = io(process.env.REACT_APP_SERVER_WS_URL!, {transports: ['websocket'], withCredentials: true})
 
-    socketIo.on('errorUpdate', (errorEvent) => {
+    socketIo.on('errorUpdate', (event) => {
       setRobotState((prevState) => {
         let newRobotState: RobotState = {...prevState};
-        newRobotState.status = errorEvent;
+        newRobotState.status = event;
         return newRobotState;
       })
     })
 
     // disk events are associated with socketIo event code 'diskEvent'
-    socketIo.on('diskEvent', (eventCode, nrOfDisksBeingProcessed) => {
-        if (eventCode == DiskEventCodes.NEW_DISK_BEING_PROCESSED) {
+    socketIo.on('diskEvent', (event, nrOfDisksBeingProcessed) => {
+        if (event == DiskEventCodes.NEW_DISK_BEING_PROCESSED) {
           // new disk is being processed event
           setRobotState((prevState) => {
             let newRobotState: RobotState = {...prevState};
@@ -82,7 +82,7 @@ function App() {
           setRobotState((prevState) => {
             let newRobotState: RobotState = {...prevState};
             newRobotState.nr_disks_processing = nrOfDisksBeingProcessed;
-            switch(eventCode) {
+            switch(event) {
               case DiskEventCodes.BLACK_DISK_COLLECTED:
                 newRobotState.nr_black_disks = newRobotState.nr_black_disks + 1; // increase number of disks collected state variable
                 diskAddAnimation({color: 'black'}); // add disk animation
