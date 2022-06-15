@@ -36,7 +36,10 @@ function App() {
     setLoadingApp(true)
     // get initial status of the robot: number of collected disks and error status
     // use REACT_APP_SERVER_URL from environment variables as base url for server requests
-    axios.get(process.env.REACT_APP_SERVER_URL + '/robot/status')
+    axios.get(process.env.REACT_APP_SERVER_URL + '/robot/status', {
+      xsrfCookieName: "XSRF-TOKEN",
+      xsrfHeaderName: "X-XSRF-TOKEN", // necessary conf for https connection
+      withCredentials: true })
         .then((res: AxiosResponse<RobotInfoResponseModel>) => {
       setRobotState(res.data as RobotState);
       setLoadingApp(false)
