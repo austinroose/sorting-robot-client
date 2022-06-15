@@ -11,6 +11,7 @@ export enum DiskEventCodes {
     NEW_DISK_BEING_PROCESSED = 110
 }
 
+// we associate human-readable text with each error code constant as well as robot event constant
 export const RobotEvents: {[key in ErrorCodes | DiskEventCodes]: string} = {
     [ErrorCodes.DISK_COLLECTED_BUT_DID_NOT_GET_TO_CONTAINER]: "Disk was collected from main belt, but didn't get put to container",
     [ErrorCodes.JAMMED_MOTOR]: 'Jammed motor',

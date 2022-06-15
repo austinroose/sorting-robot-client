@@ -10,33 +10,18 @@ import './AnimatedDiskDrop.css';
 export interface AnimatedDiskDropProps {
     disk: DiskColor;
     animationTrigger: number; // we can trigger animation with increasing this prop of component
-
 }
 
 export const AnimatedDiskDrop: React.FC<AnimatedDiskDropProps> = (props) => {
     // useRef hook gets the reference to the html element, so that we can change its style through javascript
     const diskRef = useRef<any>(null);
-    // for sanity, clear setTimout function after component dismount. So store it in some variable
+    // for sanity, clear setTimout functions after component dismount. So store these in some variable to able to clear them later
     const [timeOutObjects, setTimeOutObjects] = useState<any[]>([]);
 
     // animate dropdown 
     useEffect(() => {
         // prop animationTrigger must be 0 on initial don't want to trigger animation on first page load as useEffect hook will still run on first page load
         if (props.animationTrigger > 0) {
-            // diskRef.current.style.marginTop = '-60px';
-            // console.log('animation disk top', diskRef.current.style.marginTop);
-            // diskRef.current.style.opacity = '100%'
-            // diskRef.current.style.transitionDuration = '0ms';
-            // diskRef.current.style.transitionProperty = '';
-            // const timeOut = setTimeout(() => {
-            //     const delayMs = 1000;
-            //     diskRef.current.style.transitionProperty = "margin, opacity"
-            //     diskRef.current.style.transitionDuration = "" + delayMs + "ms" // set animation duration for fadeOut (see AniatedDiskDrop.css)
-            //     console.log('animation disk top', diskRef.current.style.marginTop, diskRef.current.style.opacity);
-            //     diskRef.current.style.opacity = '0%';
-            //     diskRef.current.style.marginTop = "0px";
-            // }, 100)
-            // clearTimeout(timeOut)
             animateDiskDroppingDown();
         }
         return function cleanUp() {
@@ -76,6 +61,7 @@ export const AnimatedDiskDrop: React.FC<AnimatedDiskDropProps> = (props) => {
         }
     }
 
+    // depending on prop disk color value, we add the correct component to the view
     return (
         <div>
             <div className='disk'>

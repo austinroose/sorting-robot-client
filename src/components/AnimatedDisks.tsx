@@ -7,6 +7,7 @@ interface AnimatedDisksProps {
     screenWidthIsMobile: boolean
 }
 
+// sliding disks animation component that is visible when robot is in working condition
 export const AnimatedDisks: React.FC<AnimatedDisksProps> = (props) => {
     const whiteDisk = useRef<any | null>(null)
     const blackDisk = useRef<any | null>(null)
