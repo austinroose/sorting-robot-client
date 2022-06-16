@@ -11,6 +11,7 @@ import { DiskColor } from './model/Disk';
 import { io } from 'socket.io-client'
 
 function App() {
+  //test
 
   // default robot state has mostly 0s as values
   const initialDefaultRobotState: RobotState = {
@@ -36,7 +37,7 @@ function App() {
     setLoadingApp(true)
     // get initial status of the robot: number of collected disks and error status
     // use REACT_APP_SERVER_URL from environment variables as base url for server requests
-    axios.get(process.env.REACT_APP_SERVER_URL + '/robot/status', {withCredentials: true})
+    axios.get(process.env.REACT_APP_SERVER_URL + '/robot/status')
         .then((res: AxiosResponse<RobotInfoResponseModel>) => {
       setRobotState(res.data as RobotState);
       setLoadingApp(false)
