@@ -33,6 +33,7 @@ function App() {
   const productionProcessEnv: any = process.env.REACT_APP_PRODUCTION; // environment variable that tells if app is production or not
 
   useEffect(() => {
+    // test
     // set the loading status of the app as true while we are initializing app with data that we are fetching and request takes some time
     setLoadingApp(true)
     // get initial status of the robot: number of collected disks and error status
